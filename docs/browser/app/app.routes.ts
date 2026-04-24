@@ -7,4 +7,5 @@ export const routes: Routes = [
     title: 'App Home Page',
     component: Home,
   },
+
 ];

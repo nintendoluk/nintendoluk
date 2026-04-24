@@ -1,0 +1,40 @@
+<section class="sheet">
+  <header class="sheet-header">
+    <div class="sheet-title-block">
+      <h1 class="sheet-title">Final Fantasy</h1>
+    </div>
+  </header>
+
+  @for (section of groupedRoles(); track section.key) {
+    @if (section.roles.length > 0) {
+      <section class="team-block" [class]="section.className">
+        <header class="team-block__header">
+          <h2>{{ section.label }}</h2>
+        </header>
+
+        <div class="role-list">
+          @for (role of section.roles; track role.id) {
+          @if (role.hide) {
+            
+          } @else {
+            <article class="role-card" [class]="section.className">
+              <div class="role-card__image">
+                <img
+                  [src]="role.image"
+                  [alt]="role.name"
+                  loading="lazy"
+                />
+              </div>
+
+              <div class="role-card__content">
+                <h3 class="role-card__name">{{ role.name }}</h3>
+                <p class="role-card__ability">{{ role.ability }}</p>
+              </div>
+            </article>
+            }
+          }
+        </div>
+      </section>
+    }
+  }
+</section>

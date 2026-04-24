@@ -1,0 +1,220 @@
+:host {
+  --paper: #f5efe2;
+  --paper-strong: #efe4cf;
+  --ink: #211b17;
+  --muted: #6f635a;
+  --line: #d7c5ab;
+  --card: #fffaf2;
+  --shadow: 0 10px 30px rgba(46, 32, 18, 0.08);
+
+  --heroes: #001eff;
+  --heroes-soft: #dceaf7;
+
+  --esper: #007dab;
+  --esper-soft: #ddf0e3;
+
+  --monsters: #a86a21;
+  --monsters-soft: #f5e5d1;
+
+  --villains: #96283d;
+  --villains-soft: #f6dce2;
+
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.75), transparent 34%),
+    linear-gradient(180deg, #f8f4eb 0%, var(--paper) 100%);
+  color: var(--ink);
+  box-sizing: border-box;
+  font-family: 'Arial', serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.sheet {
+  width: 210mm;
+  min-height: 297mm;
+  height: 297mm;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow: hidden; // garantiert exakt eine Seite, schneidet ggf. Überlauf ab
+  background: white;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 3px solid var(--line);
+}
+
+.sheet-title-block {
+  position: relative;
+  padding-left: 18px;
+}
+
+.sheet-title-block::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 6px;
+  background: linear-gradient(180deg, #ad8b57, #7d5f34);
+  border-radius: 999px;
+}
+
+.sheet-title {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 0.95;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sheet-subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.team-block {
+  background: rgba(255, 255, 255, 0.4);
+ 
+}
+
+.team-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; 
+  border-bottom: 2px solid currentColor;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.team-block__header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: 'Dumbledor 2','Arial', serif;
+  text-align: right;
+  
+}
+
+.team-block__header span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.2rem;
+  height: 2.2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.75);
+  
+}
+
+.role-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.role-card {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+}
+
+.role-card__image {
+  width: 70px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.role-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.18); /* Zoom gegen weißen Rand */
+  transform-origin: center;
+}
+
+.role-card__content {
+  min-width: 0;
+}
+
+.role-card__name {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.05;
+}
+
+.role-card__type {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.role-card__ability {
+  margin: 0;
+  font-size: 0.7rem;
+  line-height: 1.35;
+  text-wrap: pretty;
+  color: black;
+}
+
+.team-heroes {
+  color: var(--heroes);
+ }
+
+.team-esper {
+  color: var(--esper);
+}
+
+.team-monsters {
+  color: var(--monsters);
+ }
+
+.team-villains {
+  color: var(--villains);
+ }
+
+
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  :host {
+    padding: 0;
+    margin: 0;
+    background: white !important;
+  }
+
+  .sheet {
+    width: 210mm;
+    min-height: 297mm;
+    height: 297mm;
+    margin: 0;
+    padding: 10mm;
+    border: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+    overflow: hidden;
+  }
+
+  .team-block,
+  .role-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

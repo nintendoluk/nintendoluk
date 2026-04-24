@@ -1,2 +1,6 @@
-<p>Hello MDM Team
+<p>Hello Carsten
 </p>
+<label for="jsonUrl">
+  JSON url:
+  <form><input [formControl]="jsonUrl" type="text" name="jsonUrl"/> <button (click)="retrieveJson()" [disabled]="!jsonUrl.valid">Retrieve JSON</button></form>
+</label>
