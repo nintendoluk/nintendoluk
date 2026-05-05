@@ -17,8 +17,11 @@ export type ScriptData = {
   otherNight?: number
   setup?: boolean
   remindersGlobal?: string[]
-  hide?: boolean
+  hide?: boolean;
+  teamLabels?: Partial<Record<TeamKey, string>>;
 };
+
+type TeamKey = 'townsfolk' | 'outsider' | 'minion' | 'demon';
 
 @Injectable({
   providedIn: 'root',
@@ -64,4 +67,22 @@ export class ScriptDataService {
     ) ?? null
   );
 }
+
+updateTeamLabel(key: TeamKey, value: string) {
+  this.jsonData.update((data) =>
+    data?.map((item) =>
+      item.id === '_meta'
+        ? {
+            ...item,
+            teamLabels: {
+              ...item.teamLabels,
+              [key]: value,
+            },
+          }
+        : item
+    ) ?? null
+  );
+}
+
+
 }

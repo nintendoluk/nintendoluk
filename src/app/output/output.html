@@ -1,10 +1,24 @@
 <section class="output-layout">
 
 <aside class="options-zone">
-    <h2>Options</h2>
+  <h2>Options</h2>
 
-    
-  </aside>
+  @for (key of teamOrder; track key) {
+    <label [for]="'team-label-' + key">
+      {{ key }}
+    </label>
+    <input
+      [id]="'team-label-' + key"
+      [value]="teamLabels()[key]"
+      (input)="onTeamLabelInput(key, $any($event.target).value)"
+      type="text"
+    />
+  }
+
+    <button type="button" (click)="downloadJson()">
+    Download JSON
+  </button>
+</aside>
 
 
 

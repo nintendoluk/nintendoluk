@@ -35,6 +35,31 @@
   box-sizing: border-box;
 }
 
+.options-zone label,
+.options-zone input {
+  display: block;
+}
+
+.options-zone input {
+  margin-bottom: 12px;
+}
+
+.options-zone button {
+  display: block;
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: #f5efe2;
+  color: #211b17;
+  cursor: pointer;
+}
+
+.options-zone button:hover {
+  background: #e9dcc3;
+}
+
 .sheet {
   width: 198mm;
     min-height: 285mm;

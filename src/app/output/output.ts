@@ -66,18 +66,33 @@ private readonly teamMeta: Record<TeamKey, { label: string; className: string }>
   demon: { label: 'Bösewichte', className: 'team-villains' },
 };
 
-private readonly teamOrder: TeamKey[] = ['townsfolk', 'outsider', 'minion', 'demon'];
+private readonly teamConfig: Record<TeamKey, { defaultLabel: string; className: string }> = {
+  townsfolk: { defaultLabel: 'Townsfolk', className: 'team-heroes' },
+  outsider: { defaultLabel: 'Outsider', className: 'team-esper' },
+  minion: { defaultLabel: 'Minion', className: 'team-monsters' },
+  demon: { defaultLabel: 'Demon', className: 'team-villains' },
+};
+
+teamLabels = computed<Record<TeamKey, string>>(() => ({
+  townsfolk: this.meta()?.teamLabels?.townsfolk ?? this.teamConfig.townsfolk.defaultLabel,
+  outsider: this.meta()?.teamLabels?.outsider ?? this.teamConfig.outsider.defaultLabel,
+  minion: this.meta()?.teamLabels?.minion ?? this.teamConfig.minion.defaultLabel,
+  demon: this.meta()?.teamLabels?.demon ?? this.teamConfig.demon.defaultLabel,
+}));
+
+
+readonly teamOrder: TeamKey[] = ['townsfolk', 'outsider', 'minion', 'demon'];
 
 groupedRoles = computed(() =>
   this.teamOrder.map((key) => ({
     key,
-    label: this.teamMeta[key].label,
-    className: this.teamMeta[key].className,
+    label: this.teamLabels()[key],
+    className: this.teamConfig[key].className,
     roles: this.visibleRoles()
       .filter((item): item is ScriptData & { team: TeamKey } =>
         item.id !== '_meta' &&
         !!item.team &&
-        item.team in this.teamMeta
+        item.team in this.teamConfig
       )
       .filter((item) => item.team === key)
       .sort((a, b) => a.name.localeCompare(b.name, 'de')),
@@ -87,7 +102,25 @@ groupedRoles = computed(() =>
 logoUrl = computed(() =>this.scriptData().filter((item) => item.id === '_meta')[0].logo);
 
 
+onTeamLabelInput(key: TeamKey, value: string) {
+  this.scriptDataService.updateTeamLabel(key, value);
+}
 
+downloadJson() {
+  const data = this.scriptData();
+  if (!data.length) return;
+
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `${this.meta()?.name ?? 'script-data'}.json`;
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
 
 
 }
