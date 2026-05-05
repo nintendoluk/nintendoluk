@@ -3,6 +3,17 @@
 <aside class="options-zone">
   <h2>Options</h2>
 
+  <label for="header-display-mode">header</label>
+  <select
+    id="header-display-mode"
+    [value]="headerDisplayMode()"
+    (change)="onHeaderDisplayModeChange($any($event.target).value)"
+  >
+    <option value="logo">logo</option>
+    <option value="name">name</option>
+    <option value="both">logo and name</option>
+  </select>
+
   @for (key of teamOrder; track key) {
     <label [for]="'team-label-' + key">
       {{ key }}
@@ -28,9 +39,15 @@
            (drop)="onDropToVisible($event)">
   <header class="sheet-header">
     <div class="sheet-title-block">
-   @if (meta()) {
-  <img [src]="meta()!.logo" [alt]="meta()!.name" />
-  }   
+  @if (meta()) {
+    @if (showLogo() && meta()!.logo) {
+      <img [src]="meta()!.logo" [alt]="meta()!.name" />
+    }
+
+    @if (showName()) {
+      <h1 class="sheet-title-text">{{ meta()!.name }}</h1>
+    }
+  }
 </div>
   </header>
 

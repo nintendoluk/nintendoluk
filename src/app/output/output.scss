@@ -85,14 +85,24 @@
 }
 
 .sheet-title-block {
+  height: 3rem;
   position: relative;
   padding-left: 18px;
+  display: flex;
+  gap: 10px;
 }
 
 
 .sheet-title-block img{
   height: 3rem;
   display: block; // 
+}
+.sheet-title-text {
+  margin: 0;
+  line-height: 1.1;
+  font-size: 3rem;
+  font-family: 'Dumbledor 2', 'Arial', serif;
+  white-space: nowrap;
 }
 
 .sheet-title-block::before {

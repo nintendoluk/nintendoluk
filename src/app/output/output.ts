@@ -1,6 +1,6 @@
 import { Component, computed, inject, Signal } from '@angular/core';
 import { ROUTER_OUTLET_DATA } from '@angular/router';
-import { ScriptData, ScriptDataService } from '../services/script-data';
+import { ScriptData, ScriptDataService, HeaderDisplayMode } from '../services/script-data';
 
 @Component({
   selector: 'app-output',
@@ -120,6 +120,25 @@ downloadJson() {
   link.click();
 
   URL.revokeObjectURL(url);
+}
+
+headerDisplayMode = computed<HeaderDisplayMode>(
+  () => this.meta()?.headerDisplayMode ?? 'logo'
+);
+
+showLogo = computed(() => {
+  const mode = this.headerDisplayMode();
+  return mode === 'logo' || mode === 'both';
+});
+
+showName = computed(() => {
+  const mode = this.headerDisplayMode();
+  return mode === 'name' || mode === 'both';
+});
+
+onHeaderDisplayModeChange(value: string) {
+  if (value !== 'logo' && value !== 'name' && value !== 'both') return;
+  this.scriptDataService.updateHeaderDisplayMode(value);
 }
 
 

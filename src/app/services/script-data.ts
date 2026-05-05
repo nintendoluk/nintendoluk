@@ -19,9 +19,12 @@ export type ScriptData = {
   remindersGlobal?: string[]
   hide?: boolean;
   teamLabels?: Partial<Record<TeamKey, string>>;
+  headerDisplayMode?: HeaderDisplayMode;
 };
 
 type TeamKey = 'townsfolk' | 'outsider' | 'minion' | 'demon';
+
+export type HeaderDisplayMode = 'logo' | 'name' | 'both';
 
 @Injectable({
   providedIn: 'root',
@@ -79,6 +82,16 @@ updateTeamLabel(key: TeamKey, value: string) {
               [key]: value,
             },
           }
+        : item
+    ) ?? null
+  );
+}
+
+updateHeaderDisplayMode(mode: HeaderDisplayMode) {
+  this.jsonData.update((data) =>
+    data?.map((item) =>
+      item.id === '_meta'
+        ? { ...item, headerDisplayMode: mode }
         : item
     ) ?? null
   );
