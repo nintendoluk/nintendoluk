@@ -11,7 +11,8 @@
     "electron": "electron .",
     "electron:build": "ng build --configuration production --base-href ./",
     "electron:run": "npm run electron:build && electron .",
-    "dist": "npm run electron:build && electron-builder"
+    "dist": "npm run electron:build && electron-builder",
+  "deploy:gh": "ng deploy --base-href=/nintendoluk/"
   },
   "build": {
     "appId": "de.lukas.lukasangularzeugs",
