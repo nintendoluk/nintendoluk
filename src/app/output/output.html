@@ -1,8 +1,23 @@
-<section class="sheet">
+<section class="output-layout">
+
+<aside class="options-zone">
+    <h2>Options</h2>
+
+    
+  </aside>
+
+
+
+
+<section class="sheet" 
+           (dragover)="allowDrop($event)"
+           (drop)="onDropToVisible($event)">
   <header class="sheet-header">
     <div class="sheet-title-block">
-      <h1 class="sheet-title">Final Fantasy</h1>
-    </div>
+   @if (meta()) {
+  <img [src]="meta()!.logo" [alt]="meta()!.name" />
+  }   
+</div>
   </header>
 
   @for (section of groupedRoles(); track section.key) {
@@ -17,7 +32,7 @@
           @if (role.hide) {
             
           } @else {
-            <article class="role-card" [class]="section.className">
+            <article class="role-card" [class]="section.className"  draggable="true" (dragstart)="onDragStart($event, role.id)">
               <div class="role-card__image">
                 <img
                   [src]="role.image"
@@ -37,4 +52,37 @@
       </section>
     }
   }
+   <p class="sheet-footer">* Nicht in der ersten Nacht</p>
 </section>
+
+<aside class="hidden-zone"
+         (dragover)="allowDrop($event)"
+         (drop)="onDropToHidden($event)">
+    <h2>Ausgeblendet</h2>
+
+    @if(hiddenRoles().length === 0) {
+      <p>Drag and drop roles here to hide them</p>
+    }
+
+
+    @for (role of hiddenRoles(); track role.id) {
+      <article class="hidden-role"
+               draggable="true"
+               (dragstart)="onDragStart($event, role.id)">
+        <div class="hidden-role-card__image">
+                <img
+                  [src]="role.image"
+                  [alt]="role.name"
+                  loading="lazy"
+                />
+              </div>
+
+              <div class="hidden-role-card__content">
+                <h3 class="hidden-role-card__name">{{ role.name }}</h3>
+                <p class="hidden-role-card__ability">{{ role.ability }}</p>
+              </div>
+      </article>
+    }
+  </aside>
+
+  </section>

@@ -1,7 +1,10 @@
-<nav>
-      <a routerLink="/">Home</a>
-      |
-      <a routerLink="/output">Output</a>
+<nav class="main-nav">
+  <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+    Home
+  </a>
+  <a routerLink="/output" routerLinkActive="is-active">
+    Output
+  </a>
 </nav>
 
 <router-outlet [routerOutletData]='jsonData' />

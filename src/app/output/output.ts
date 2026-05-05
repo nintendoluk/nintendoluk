@@ -1,5 +1,6 @@
 import { Component, computed, inject, Signal } from '@angular/core';
 import { ROUTER_OUTLET_DATA } from '@angular/router';
+import { ScriptData, ScriptDataService } from '../services/script-data';
 
 @Component({
   selector: 'app-output',
@@ -12,14 +13,50 @@ import { ROUTER_OUTLET_DATA } from '@angular/router';
 
 export class Output {
  
+  private scriptDataService = inject(ScriptDataService);
   
-  jsonData = inject<Signal<string>>(ROUTER_OUTLET_DATA);
-  scriptData = computed<ScriptData[]>(() => JSON.parse(this.jsonData()));
+  scriptData = computed<ScriptData[]>(() => this.scriptDataService.jsonData() ?? []);
 
+  meta = computed(() => this.scriptData().find((item) => item.id === '_meta') ?? null);
 
+  visibleRoles = computed(() =>
+    this.scriptData().filter(
+      (item) => item.id !== '_meta' && !item.hide
+    )
+  );
 
+  hiddenRoles = computed(() =>
+    this.scriptData().filter(
+      (item) => item.id !== '_meta' && !!item.hide
+    )
+  );
 
+  onDragStart(event: DragEvent, roleId: string) {
+    if (!event.dataTransfer) return;
+    event.dataTransfer.setData('text/plain', roleId);
+    event.dataTransfer.effectAllowed = 'move';
+  }
 
+  allowDrop(event: DragEvent) {
+    event.preventDefault();
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'move';
+    }
+  }
+
+  onDropToHidden(event: DragEvent) {
+    event.preventDefault();
+    const roleId = event.dataTransfer?.getData('text/plain');
+    if (!roleId) return;
+    this.scriptDataService.setHidden(roleId, true);
+  }
+
+  onDropToVisible(event: DragEvent) {
+    event.preventDefault();
+    const roleId = event.dataTransfer?.getData('text/plain');
+    if (!roleId) return;
+    this.scriptDataService.setHidden(roleId, false);
+  }
 
 
 private readonly teamMeta: Record<TeamKey, { label: string; className: string }> = {
@@ -36,7 +73,7 @@ groupedRoles = computed(() =>
     key,
     label: this.teamMeta[key].label,
     className: this.teamMeta[key].className,
-    roles: this.scriptData()
+    roles: this.visibleRoles()
       .filter((item): item is ScriptData & { team: TeamKey } =>
         item.id !== '_meta' &&
         !!item.team &&
@@ -47,7 +84,7 @@ groupedRoles = computed(() =>
   })),
 );
 
-
+logoUrl = computed(() =>this.scriptData().filter((item) => item.id === '_meta')[0].logo);
 
 
 
@@ -57,14 +94,4 @@ groupedRoles = computed(() =>
 
 type TeamKey = 'townsfolk' | 'outsider' | 'minion' | 'demon';
 
-type ScriptData = {
-  id :string;
-  image :string;
-  firstNightReminder :string;
-  reminders :string[];
-  name :string;
-  team :string;
-  ability :string;
-  firstNight :number;
-  hide : boolean;
-}
+

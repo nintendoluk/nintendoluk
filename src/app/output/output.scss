@@ -21,9 +21,9 @@
 
   display: block;
   min-height: 100vh;
-  background:
+  /*background:
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.75), transparent 34%),
-    linear-gradient(180deg, #f8f4eb 0%, var(--paper) 100%);
+    linear-gradient(180deg, #f8f4eb 0%, var(--paper) 100%);*/
   color: var(--ink);
   box-sizing: border-box;
   font-family: 'Arial', serif;
@@ -36,13 +36,14 @@
 }
 
 .sheet {
-  width: 210mm;
-  min-height: 297mm;
-  height: 297mm;
+  width: 198mm;
+    min-height: 285mm;
+    height: 285mm;
   margin: 0 auto;
   box-sizing: border-box;
   overflow: hidden; // garantiert exakt eine Seite, schneidet ggf. Überlauf ab
   background: white;
+  
 }
 
 .sheet-header {
@@ -52,9 +53,21 @@
   border-bottom: 3px solid var(--line);
 }
 
+
+.sheet-footer {
+  text-align: center;
+      margin-block-start: 0;
+}
+
 .sheet-title-block {
   position: relative;
   padding-left: 18px;
+}
+
+
+.sheet-title-block img{
+  height: 3rem;
+  display: block; // 
 }
 
 .sheet-title-block::before {
@@ -64,16 +77,16 @@
   top: 4px;
   bottom: 4px;
   width: 6px;
-  background: linear-gradient(180deg, #ad8b57, #7d5f34);
+  //background: linear-gradient(180deg, #ad8b57, #7d5f34);
   border-radius: 999px;
 }
 
 .sheet-title {
-  margin: 0;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 0.95;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  width: 100%;
+  height: 100%;
+  object-position: center;
+  mix-blend-mode: multiply;
+  transform-origin: center;
 }
 
 .sheet-subtitle {
@@ -94,6 +107,7 @@
   justify-content: flex-end; 
   border-bottom: 2px solid currentColor;
   background: rgba(255, 255, 255, 0.5);
+  margin-block-end: 0.1rem;
 }
 
 .team-block__header h2 {
@@ -129,7 +143,7 @@
 }
 
 .role-card__image {
-  width: 70px;
+  width: 69px;
   aspect-ratio: 1 / 1;
   overflow: hidden;
 }
@@ -139,7 +153,6 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transform: scale(1.18); /* Zoom gegen weißen Rand */
   transform-origin: center;
 }
 
@@ -149,7 +162,7 @@
 
 .role-card__name {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 0.8rem;
   line-height: 1.05;
 }
 
@@ -169,6 +182,41 @@
   color: black;
 }
 
+
+.hidden-role-card__image {
+  width: 70px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.hidden-role-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform-origin: center;
+}
+
+.hidden-role-card__content {
+  min-width: 0;
+}
+
+.hidden-role-card__name {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.05;
+}
+
+
+.hidden-role-card__ability {
+  margin: 0;
+  font-size: 0.7rem;
+  line-height: 1.35;
+  text-wrap: pretty;
+  color: rgb(255, 255, 255);
+}
+
+
 .team-heroes {
   color: var(--heroes);
  }
@@ -185,12 +233,38 @@
   color: var(--villains);
  }
 
+.output-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.hidden-zone {
+  position: sticky;
+  top: 24px;
+  color:antiquewhite;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.options-zone {
+  position: sticky;
+  top: 24px;
+  color:antiquewhite;
+  background: rgba(0, 0, 0, 0.1);
+}
 
 
 @media print {
   @page {
     size: A4 portrait;
+    margin: 6mm;
+  }
+
+  body {
+    padding: 0;
     margin: 0;
+    background-color: white !important;
   }
 
   :host {
@@ -199,17 +273,22 @@
     background: white !important;
   }
 
+  .hidden-zone {
+    display: none !important;
+  }
+
+  .options-zone {
+    display: none !important;
+}
+
   .sheet {
-    width: 210mm;
-    min-height: 297mm;
-    height: 297mm;
+    width: 198mm;
+    min-height: 285mm;
+    height: 285mm;
     margin: 0;
-    padding: 10mm;
+    padding: 0;
     border: 0;
     box-shadow: none;
-    break-after: page;
-    page-break-after: always;
-    overflow: hidden;
   }
 
   .team-block,

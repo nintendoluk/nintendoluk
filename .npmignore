@@ -1,0 +1,11 @@
+# Keep npm pack input deterministic for electron packaging
+*
+
+# Required app entry and packaged frontend
+!index.js
+!package.json
+!dist/**
+
+# Never include previous build outputs
+release/**
+docs/**

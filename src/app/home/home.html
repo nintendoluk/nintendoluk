@@ -1,6 +1,29 @@
-<p>Hello Carsten
+<p>
+<label for="jsonUrl">JSON url:</label>
+<input id="jsonUrl" [formControl]="jsonUrl" type="text" name="jsonUrl" />
+
+<button type="button" (click)="retrieveJson()" [disabled]="!jsonUrl.valid || scriptDataService.loading()">
+  Retrieve JSON
+</button>
 </p>
-<label for="jsonUrl">
-  JSON url:
-  <form><input [formControl]="jsonUrl" type="text" name="jsonUrl"/> <button (click)="retrieveJson()" [disabled]="!jsonUrl.valid">Retrieve JSON</button></form>
-</label>
+<p>
+<label for="jsonFile">Upload JSON:</label>
+  <input
+  id="jsonFile"
+  type="file"
+  accept=".json,application/json"
+  (change)="onJsonFileSelected($event)"
+  />
+</p>
+
+@if (scriptDataService.loading()) {
+  <p>Loading JSON...</p>
+}
+
+@if (scriptDataService.errorText()) {
+  <p>{{ scriptDataService.errorText() }}</p>
+}
+
+@if (scriptDataService.jsonData()) {
+  <pre>{{ scriptDataService.jsonData() | json }}</pre>
+}
